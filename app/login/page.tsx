@@ -1,7 +1,9 @@
 "use client"
 
+import LoginPage from "@/components/LoginPage";
+
 const Login = () => {
-    return <div>Login</div>
+    return <LoginPage />
 }
 
 export default Login;
