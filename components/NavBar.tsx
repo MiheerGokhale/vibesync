@@ -25,11 +25,11 @@ const NavBar = () => {
             <div className="flex justify-center items-center">
                 {!session ? (
                     <>
-                        <Button text="Signin" onClick={handleSignIn} />
-                        <Button text="Login" onClick={handleLogin} />
+                        <Button className="bg-green-500" text="Signin" onClick={handleSignIn} />
+                        <Button className="bg-green-500" text="Login" onClick={handleLogin} />
                     </>
                 ) : (
-                    <Button text="Dashboard" onClick={() => router.push("/dashboard")} />
+                    <Button className="bg-green-500" text="Dashboard" onClick={() => router.push("/dashboard")} />
                 )}
             </div>
             

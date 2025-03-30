@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+/* styles/globals.css */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  background-color: #86efac !important;
+  color: black !important;
+  -webkit-box-shadow: 0 0 0px 1000px #86efac inset !important;
+}
