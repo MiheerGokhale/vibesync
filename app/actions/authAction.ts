@@ -9,7 +9,7 @@ export async function signUpUser(input:SignUpInput){
     const parsedInput = signUpSchema.safeParse(input);
 
     if (!parsedInput.success) {
-        throw new Error(parsedInput.error.format());
+        throw new Error(JSON.stringify(parsedInput.error.format(),null,2));
     }
 
     const { firstName,lastName,email,password } = parsedInput.data;
