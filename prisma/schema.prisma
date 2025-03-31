@@ -14,9 +14,25 @@ datasource db {
 }
 
 model User {
-  id String @unique  @default(cuid())
+  id String @id  @default(cuid())
   firstName String
   lastName String
   email String @unique
   password String
+
+  accounts SpotifyAccount[]
+}
+
+model SpotifyAccount {
+  id String @id @default(cuid())
+  userId String
+
+  emailAddress String @unique
+  provider String
+  image String
+  access_token String
+  token_type String
+  refresh_token String
+
+  user User @relation(fields: [userId],references: [id])
 }

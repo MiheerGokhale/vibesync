@@ -31,6 +31,8 @@ const LoginPage = () => {
                 redirect: false // prevent  auto redirect
             })
 
+            console.log(result);
+
             if (result?.error) {
                 throw new Error(result.error);
             }

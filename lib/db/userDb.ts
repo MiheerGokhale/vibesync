@@ -1,5 +1,5 @@
 import { prisma } from "../Prisma-Config";
-import { SignUpInput} from "../zod/userZod";
+import { SignUpInput, UserAccountSchema} from "../zod/userZod";
 
 export const userDb = {
     createUser: async ({firstName,lastName,email,password}:SignUpInput) => {
@@ -18,5 +18,27 @@ export const userDb = {
                 email
             }
         });
+    },
+    createUserAccount: async ({id,firstName,lastName,email,password,image,provider,access_token,refresh_token,token_type}:UserAccountSchema) => {
+        return await prisma.user.create({
+            data:{
+                firstName,
+                lastName,
+                email,
+                password,
+                accounts:{
+                    create: {
+                        id,
+                        provider,
+                        access_token,
+                        refresh_token,
+                        token_type,
+                        image,
+                        emailAddress:email
+                    }
+                }
+            }
+        
+        })
     }
 }

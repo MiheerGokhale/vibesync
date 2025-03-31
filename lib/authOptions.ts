@@ -1,7 +1,12 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import { loginSchema } from "./zod/userZod";
+import SpotifyProvider from "next-auth/providers/spotify";
+import { loginSchema, userAccountSchema } from "./zod/userZod";
 import { userDb } from "./db/userDb";
 import bcrypt from "bcrypt";
+import { User } from "next-auth";
+import { Account } from "next-auth";
+import { accountSchema } from "./zod/accountZod";
+import { accountDb } from "./db/accountDb";
 
 const authOptions = {
   providers: [
@@ -28,6 +33,8 @@ const authOptions = {
         try {
           // ✅ Fetch user from DB
           const user = await userDb.getUser(credentials?.email as string);
+
+          console.log(JSON.stringify(user));
           if (!user) {
             throw new Error("User not found"); // Authentication failed
           }
@@ -38,19 +45,126 @@ const authOptions = {
             user.password
           );
           if (!isMatch) {
+            console.log("Incorrect Password");
             throw new Error("Incorrect password"); // Authentication failed
           }
 
           return user; // ✅ Authentication successful
         } catch (error) {
-          const errMessage =
-            error instanceof Error ? error.message : "Authentication failed.";
-          console.error("Authentication error:", errMessage);
-          throw new Error(errMessage);
+          console.error("Authentication error:", error);
+          return null; // ⬅️ Return `null` instead of throwing an error
         }
       },
     }),
+    // Spotify OAuth Authentication
+    SpotifyProvider({
+      clientId: process.env.SPOTIFY_CLIENT_ID as string,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
+      authorization:
+        "https://accounts.spotify.com/authorize?scope=user-read-email,user-read-private,playlist-modify-public,playlist-modify-private,user-read-email,user-top-read,playlist-modify-public,playlist-modify-private,user-library-read,user-read-playback-state,user-modify-playback-state",
+    }),
   ],
+  callbacks: {
+    async signIn({ user, account }: { user: User; account: Account | null }) {
+      // ✅ Allow Credentials Provider
+      if (account?.provider === "credentials") {
+        console.log("User logged in with email/password.");
+        return true; // Allow normal login
+      }
+
+      // ✅ Handle Spotify OAuth
+      if (account?.provider === "spotify") {
+        if (!user.email) {
+          const split = user.name?.split(" ");
+          const hashedPassword = await bcrypt.hash(user.id, 10);
+
+          await userDb.createUserAccount({
+            id: user.id,
+            firstName: (split ?? [])[0],
+            lastName: (split ?? [])[1],
+            email: user.email || `spotify-${crypto.randomUUID()}@noemail.com`,
+            password: hashedPassword,
+            image: user.image as string,
+            provider: account.provider,
+            token_type: account.token_type as string,
+            access_token: account.access_token as string,
+            refresh_token: account.refresh_token as string,
+          });
+
+          return true;
+        } else {
+          // Check if user exists, if not, create a new user
+          const existingUser = await userDb.getUser(user.email);
+          if (!existingUser) {
+            const split = user.name?.split(" ");
+            const hashedPassword = await bcrypt.hash(user.id, 10);
+
+            const parsedInput = userAccountSchema.safeParse({
+              id: user.id,
+              firstName: (split ?? [])[0],
+              lastName: (split ?? [])[1],
+              email: user.email,
+              password: hashedPassword,
+              image: user.image as string,
+              provider: account.provider,
+              token_type: account.token_type as string,
+              access_token: account.access_token as string,
+              refresh_token: account.refresh_token as string,
+            });
+
+            if (!parsedInput.success) {
+              return false;
+            }
+
+            await userDb.createUserAccount({
+              id: parsedInput.data.id,
+              firstName: (split ?? [])[0],
+              lastName: (split ?? [])[1],
+              email: parsedInput.data.email,
+              password: parsedInput.data.password,
+              image: parsedInput.data.image,
+              provider: parsedInput.data.provider,
+              token_type: parsedInput.data.token_type,
+              access_token: parsedInput.data.access_token,
+              refresh_token: parsedInput.data.refresh_token,
+            });
+
+            return true;
+          } else {
+            const parsedInput = accountSchema.safeParse({
+              id: user.id,
+              userId: existingUser.id,
+              emailAddress: existingUser.email,
+              provider: account.provider,
+              image: user.image,
+              token_type: account.token_type,
+              access_token: account.access_token,
+              refresh_token: account.refresh_token,
+            });
+
+            if (!parsedInput.success) {
+              return false;
+            }
+
+            await accountDb.createAccount({
+              id: parsedInput.data.id,
+              userId: parsedInput.data.userId,
+              emailAddress: parsedInput.data.emailAddress,
+              image: parsedInput.data.image,
+              provider: parsedInput.data.provider,
+              token_type: parsedInput.data.token_type,
+              access_token: parsedInput.data.access_token,
+              refresh_token: parsedInput.data.refresh_token,
+            });
+
+            return true;
+          }
+        }
+      }
+
+      throw new Error("Invalid user data from Spotify.");
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login", // Redirect failed login attempts here

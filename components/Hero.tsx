@@ -7,10 +7,10 @@ const Hero = () => {
             <h2 className="text-3xl">Music + Weather + Mood</h2>
         </div>
         <div className="flex mt-4">
-            <Label className="bg-amber-400 text-white font-medium" icon={smile} content="Happy" />
-            <Label className="bg-sky-400 text-white font-medium" icon={cloud} content="Chill" />
-            <Label className="bg-orange-500 text-white font-medium" icon={fire} content="Energetic" />
-            <Label className="bg-rose-700 text-white font-medium" icon={sad} content="Sad" />
+            <Label className="bg-amber-400 text-white font-medium transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110" icon={smile} content="Happy" />
+            <Label className="bg-sky-400 text-white font-medium transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110" icon={cloud} content="Chill" />
+            <Label className="bg-orange-500 text-white font-medium transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110" icon={fire} content="Energetic" />
+            <Label className="bg-rose-700 text-white font-medium transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110" icon={sad} content="Sad" />
         </div>
     </div>
 }

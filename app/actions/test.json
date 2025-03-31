@@ -1,0 +1,17 @@
+{
+    "id": "31hluqmfz2c3dzw2m5apol6bcyki",
+    "name": "Miheer Gokhale",
+    "email": "miheergokhale24@gmail.com",
+    "image": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=147811126057306&height=300&width=300&ext=1745996608&hash=Abb4wDbTDC4pQANSjOGOPKUP"
+}
+
+{
+    "provider": "spotify",
+    "type": "oauth",
+    "providerAccountId": "31hluqmfz2c3dzw2m5apol6bcyki",
+    "access_token": "BQDdXxVnjAFBYV5V7nhqqtScyQtIHyLIct5zRwEzN8cFpByOOeJrks_R614MdlVZzkYrJ7KSaRMaPE6rCnp_1Oe-iX3y2exSHyK37SQAGb-vd_LohLNi9RVJj6S0xfZ3jUDIH24ON1eqZ1JnEsYiAzbPcSq7OUaP6MqvbmCs6QwWJ1GWSbdwMPrIZooRd5ABTh_rNfYS70YLGHYW4CykcacvecGrjoZ0SCNjrYn5QbpikvDNB0WMr2tFRulCjeyeAFU2Yd8T7VCbrDm8UhTQi_jgbeQ0jXLMFnBtRWnZblz3Lcdehf3iAk2dAXVX",
+    "token_type": "Bearer",
+    "expires_at": 1743413415,
+    "refresh_token": "AQA14yaTOj_aPCUPixgGsEcUHs6fy3XphRNX-RY-kkVqP8BhuJ-NrBBtda1DP5vGMJRg2OdoTAMyVR6oDHjyh3WdplYc3NQB_JhIp02D7X7u5rf2L8RMlRJagRwqedLWgzc",
+    "scope": "user-modify-playback-state user-library-read playlist-modify-private playlist-modify-public user-read-playback-state user-read-email user-top-read"
+}

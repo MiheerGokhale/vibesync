@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Icon from "@/components/Icon";
 import Button from "./Button";
+import { signOut } from "next-auth/react";
 
 const NavBar = () => {
     const { data: session } = useSession();
@@ -29,10 +30,13 @@ const NavBar = () => {
                         <Button className="bg-green-500" text="Login" onClick={handleLogin} />
                     </>
                 ) : (
-                    <Button className="bg-green-500" text="Dashboard" onClick={() => router.push("/dashboard")} />
+                    <>
+                        <Button className="bg-green-500" text="Dashboard" onClick={() => router.push("/dashboard")} />
+                        <Button className="bg-green-500" text="Logout" onClick={() => signOut()} />
+                    </>
                 )}
             </div>
-            
+
         </div>
     );
 };
