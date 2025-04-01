@@ -7,6 +7,7 @@ import useLoginStore from "@/store/useLoginStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 const LoginPage = () => {
     const email = useLoginStore((state) => state.email);
@@ -19,7 +20,7 @@ const LoginPage = () => {
     const handleLogin = async () => {
         console.log("inside handle--------------");
         if (!email || !password) {
-            console.log("Please enter email and password");
+            toast.error("Please enter email and password");
             return;
         }
 
@@ -31,17 +32,15 @@ const LoginPage = () => {
                 redirect: false // prevent  auto redirect
             })
 
-            console.log(result);
-
             if (result?.error) {
                 throw new Error(result.error);
             }
 
-            // toast.success("Login successful!");
+            toast.success("Login successful!");
             router.push("/dashboard"); // Redirect after login
         } catch (error) {
             console.log(error);
-            // toast.error(error.message || "Login failed");
+            toast.error((error instanceof Error ? error.message : "Login failed"));
         } finally {
             setLoading(false);
         }

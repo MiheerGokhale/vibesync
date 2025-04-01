@@ -3,10 +3,28 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import { loginSchema, userAccountSchema } from "./zod/userZod";
 import { userDb } from "./db/userDb";
 import bcrypt from "bcrypt";
-import { User } from "next-auth";
+import { Session, User } from "next-auth";
 import { Account } from "next-auth";
 import { accountSchema } from "./zod/accountZod";
 import { accountDb } from "./db/accountDb";
+import { JWT } from "next-auth/jwt";
+
+// Extend the Session type to include user.id
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string; // Add custom properties here
+      email: string;
+      image?: string;
+      name?: string;
+    };
+  }
+}
+
+interface CustomToken extends JWT {
+  id?: string;
+}
+
 
 const authOptions = {
   providers: [
@@ -27,8 +45,6 @@ const authOptions = {
           console.error("Validation failed:", parsedInput.error.format());
           throw new Error("Invalid email or password format");
         }
-
-        console.log("auth actions-------------------------");
 
         try {
           // ✅ Fetch user from DB
@@ -60,8 +76,14 @@ const authOptions = {
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID as string,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
-      authorization:
-        "https://accounts.spotify.com/authorize?scope=user-read-email,user-read-private,playlist-modify-public,playlist-modify-private,user-read-email,user-top-read,playlist-modify-public,playlist-modify-private,user-library-read,user-read-playback-state,user-modify-playback-state",
+      authorization: {
+        url: "https://accounts.spotify.com/authorize",
+        params: {
+          scope:
+            "user-read-email user-read-private playlist-modify-public playlist-modify-private user-top-read user-library-read user-read-playback-state user-modify-playback-state",
+          show_dialog: true, // ✅ Forces Spotify to re-authenticate
+        },
+      },
     }),
   ],
   callbacks: {
@@ -163,6 +185,21 @@ const authOptions = {
       }
 
       throw new Error("Invalid user data from Spotify.");
+    },
+
+    async jwt({ token, user }: { token: CustomToken; user: User }) {
+      if (user) {
+        token.id = user.id;
+        token.email= user.email // ✅ Store user ID in the token
+      }
+      return token;
+    },
+    async session({ session, token }:{session:Session,token:CustomToken}) {
+      if (token?.id) {
+        session.user.id = token.id as string; // ✅ Add ID from token
+        session.user.email = token.email as string;
+      }
+      return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

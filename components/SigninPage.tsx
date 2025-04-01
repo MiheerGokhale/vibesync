@@ -8,7 +8,8 @@ import Icon from "./Icon";
 import useSigninStore from "@/store/useSigninStore";
 import { signUpUser } from "@/app/actions/authAction";
 import { useRouter } from "next/navigation";
-import SpotifyButton from "./SpotifyButton";
+import SpotifyAuth from "./SpotifyAuth";
+import { toast } from "sonner";
 
 const SigninPage = () => {
     const {firstName,lastName,email,password,setFirstName,setLastName,setEmail,setPassword} = useSigninStore();
@@ -45,13 +46,14 @@ const SigninPage = () => {
                     <Button onClick={async () => {
                         try {
                             await signUpUser({firstName,lastName,email,password});
+                            toast.success("Signin successful!");
                             router.push("/dashboard");
                         } catch (error) {
                             console.log(error);
                         }
                     }} className="text-black rounded-md w-full bg-green-700 py-3 hover:bg-green-900 transition mx-0 focus:ring-2 focus:ring-green-700 focus:border-green-700" text={"Create account"} />
 
-                    <SpotifyButton />
+                    <SpotifyAuth />
                 </div>
             </div>
         </div>

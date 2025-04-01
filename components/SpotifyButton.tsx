@@ -1,16 +1,19 @@
-import { signIn, useSession } from "next-auth/react";
+import Image from "next/image";
 
-const SpotifyButton = () => {
-    const { data:session } = useSession();
+type Props = {
+    content:string,
+    onClick: () => void
+}
 
-    return (
-        <button
-          onClick={() => signIn("spotify",{ callbackUrl: "/dashboard" })}
-          className="px-4 py-2 bg-green-500 text-white rounded"
-        >
-          {session?.user ? "Connected to Spotify 🎵" : "Connect to Spotify"}
-        </button>
-      );
+const SpotifyButton = ({content,onClick}:Props) => {
+    return <div onClick={onClick} className="flex flex-row justify-center items-center bg-green-500 px-6 py-2 rounded-xl">
+        <div className="w-1/2 text-black font-semibold">
+        {content}
+        </div>
+        <div className="w-1/2 ">
+            <Image className="w-24" src={"/spotify.svg"}  width={6} height={8} alt="Spotify" />
+        </div>
+    </div>
 }
 
 export default SpotifyButton;
