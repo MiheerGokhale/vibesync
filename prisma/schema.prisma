@@ -27,10 +27,10 @@ model SpotifyAccount {
   id String @id @default(cuid())
   userId String
 
-  emailAddress String @unique
+  emailAddress String 
   provider String
   image String
-  access_token String
+  access_token String @unique
   token_type String
   refresh_token String
 

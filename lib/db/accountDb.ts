@@ -25,5 +25,22 @@ export const accountDb = {
                 refresh_token
             }  // Create new account if it doesn't exist
         });
-    }    
+    },
+    getAccounts: async (userId:string) => {   
+        return await prisma.spotifyAccount.findMany({
+            where:{
+                userId
+            }
+        })
+    },
+    getAccount: async (userId:string,emailAddress:string) => {
+
+        console.log(userId,emailAddress);
+        return await prisma.spotifyAccount.findFirst({
+            where:{
+                userId,
+                emailAddress
+            }
+        })
+    },
 }

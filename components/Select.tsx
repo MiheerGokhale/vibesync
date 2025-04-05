@@ -5,7 +5,7 @@ import React from "react";
 
 type Props = {
     label: string,
-    options: { value: string, content: string }[],
+    options: { value: string, content: string,icon:React.ReactNode }[],
     placeholder: string,
     className?:string,
     labelClassName?:string,
@@ -25,7 +25,7 @@ const Select = ({ label, options, placeholder, className ,labelClassName , selec
             onChange={handleChange}>
                 <option className="bg-green-200 text-black font-medium" value="" disabled selected>{placeholder}</option> {/* Placeholder option */}
                 {options.map((option) => {
-                    return <option className="bg-green-200 text-black font-medium" key={option.value} value={option.value}>{option.content}</option>
+                    return <option className="bg-green-200 text-black font-medium" key={option.value} value={option.value}>{option.icon} <span className="pl-2">{option.content}</span></option>
                 })}
             </select>
         </div>

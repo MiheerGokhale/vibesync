@@ -80,7 +80,7 @@ const authOptions = {
         url: "https://accounts.spotify.com/authorize",
         params: {
           scope:
-            "user-read-email user-read-private playlist-modify-public playlist-modify-private user-top-read user-library-read user-read-playback-state user-modify-playback-state",
+            "user-read-email user-read-private playlist-modify-public playlist-modify-private user-top-read user-library-read user-read-playback-state user-modify-playback-state streaming",
           show_dialog: true, // ✅ Forces Spotify to re-authenticate
         },
       },

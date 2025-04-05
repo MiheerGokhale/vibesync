@@ -2,14 +2,39 @@
 
 import Icon from "@/components/Icon";
 import Button from "./Button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import SpotifyButton from "./SpotifyButton";
 import { spotifyAuthorizationUrl } from "@/app/actions/spotify/spotifyAuthAction";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useCurrentAccount, useUserAccount } from "@/store/UserStore";
+// import Image from "next/image";
 
 const DashNavBar = () => {
+    const session = useSession();
+
+    const { accounts, fetchAccounts } = useUserAccount();
+    const emailAddress = useCurrentAccount((state) => state.emailAddress);
+    const setEmailAddress = useCurrentAccount((state) => state.setEmailAddress);
+    // const image = useCurrentAccount((state) => state.image);
+    const setImage = useCurrentAccount((state) => state.setImage);
+
     const router = useRouter();
+    
+
+    useEffect(() => {
+        if (session.status === "authenticated" && session.data?.user?.id) {
+            fetchAccounts(session.data.user.id); // Only fetch accounts once when the user logs in
+        }
+    }, [session.status, session.data]); // Only re-run when session updates
+    
+    useEffect(() => {
+        if (accounts.length > 0 && emailAddress === "") {
+            setEmailAddress(accounts[0].emailAddress);
+            setImage(accounts[0].image);
+        }
+    }, [accounts]); // Only run when `accounts` update
 
     return (
         <div className="z-10 absolute top-0 left-0 w-full px-8 py-6 flex justify-center items-center">
@@ -27,17 +52,37 @@ const DashNavBar = () => {
                 </div>
 
                 {/* Authentication Buttons */}
-                <div className="flex justify-center items-center">
+                {emailAddress === "" ? <div className="flex justify-center items-center">
                     <>
-                        <Button className="bg-green-500" text="Logout" onClick={() => signOut({ callbackUrl: "/" })} />
+                        <Button className="bg-green-500" text="Logout" onClick={() => {
+                            signOut({ callbackUrl: "/" })
+                            setEmailAddress("");
+                            setImage("");
+                            }} />
                     </>
-                    <SpotifyButton content="Connect" onClick={async ()=>{
+                    <SpotifyButton content="Connect" onClick={async () => {
                         const url = await spotifyAuthorizationUrl();
                         router.push(url);
                     }} />
-                </div>
-
-
+                </div> : <div className="flex justify-center items-center">
+                    <>
+                        <Button className="bg-green-500" text="Logout" onClick={() => {
+                            signOut({ callbackUrl: "/" })
+                            setEmailAddress("");
+                            setImage("");
+                            }} />
+                    </>
+                    <div className="flex justify-center items-center">
+                        <div className="flex flex-row justify-center items-center bg-green-500 px-6 py-2 rounded-xl">
+                            <div className="w-1/2 text-black font-semibold">
+                                {emailAddress}
+                            </div>
+                            <div className="w-1/2 ">
+                                {/* <Image  src={`${image}`} width={6} height={8} alt="Spotify" /> */}
+                            </div>
+                        </div>
+                    </div>
+                </div>}
             </div>
 
         </div>

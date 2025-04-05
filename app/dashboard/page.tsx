@@ -1,6 +1,8 @@
+"use client";
 
 const DashBoard = () => {
-    return <div className="">
+    return <div className="text-white">
+
     </div>
 }
 

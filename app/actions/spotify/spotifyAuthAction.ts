@@ -16,7 +16,7 @@ export const spotifyAuthorizationUrl = async () => {
     client_id: process.env.SPOTIFY_CLIENT_ID as string,
     response_type: "code",
     scope:
-      "user-read-email user-read-private playlist-modify-public playlist-modify-private user-top-read user-library-read user-read-playback-state user-modify-playback-state",
+      "user-read-email user-read-private playlist-modify-public playlist-modify-private user-top-read user-library-read user-read-playback-state user-modify-playback-state streaming",
     redirect_uri: process.env.SPOTIFY_REDIRECT_URI as string,
     state,
   });
