@@ -1,10 +1,10 @@
 "use client";
 
-import { useCurrentAccount } from "@/store/UserStore";
 
 const Playlist = () => {
-    const emailAddress = useCurrentAccount((state) => state.emailAddress);
-    return <div className="text-white">{emailAddress}</div>
+    return <div className="flex flex-row h-screen w-screen px-10 pb-32">
+
+    </div>
 }
 
 export default Playlist;

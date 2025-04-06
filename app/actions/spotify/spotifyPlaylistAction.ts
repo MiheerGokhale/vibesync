@@ -2,8 +2,11 @@
 
 import authOptions from "@/lib/authOptions";
 import { accountDb } from "@/lib/db/accountDb";
+import { playlistDb } from "@/lib/db/playlistDb";
 import { prisma } from "@/lib/Prisma-Config";
 import Spotify from "@/lib/utility/spotify";
+import { playlistSchema } from "@/lib/zod/spotifyZod";
+import { Track } from "@/store/SpotifyStore";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 
@@ -36,43 +39,42 @@ export const getPlaylist = async (
 };
 
 export const getToken = async (emailAddress: string) => {
-    const session = await getServerSession(authOptions);
-  
-    if (!session?.user.id) {
-      throw new Error("Unauthenticated");
-    }
-  
-    const account = await accountDb.getAccount(session.user.id, emailAddress);
-    if (!account) {
-      throw new Error("Spotify account not found for user.");
-    }
-  
-    // If token is still valid, return it
-    if (await isTokenValid(account.access_token)) {
-      return account.access_token;
-    }
-  
-    // Refresh the token
-    const data = await refreshSpotifyToken(account.refresh_token);
-  
-    if (!data?.access_token) {
-      throw new Error("Failed to refresh access token.");
-    }
-  
-    // Update access_token and possibly refresh_token
-    await prisma.spotifyAccount.update({
-      where: {
-        access_token: account.access_token,
-      },
-      data: {
-        access_token: data.access_token,
-        refresh_token: data.refresh_token || account.refresh_token, // keep old if new not returned
-      },
-    });
-  
-    return data.access_token;
-  };
-  
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user.id) {
+    throw new Error("Unauthenticated");
+  }
+
+  const account = await accountDb.getAccount(session.user.id, emailAddress);
+  if (!account) {
+    throw new Error("Spotify account not found for user.");
+  }
+
+  // If token is still valid, return it
+  if (await isTokenValid(account.access_token)) {
+    return account.access_token;
+  }
+
+  // Refresh the token
+  const data = await refreshSpotifyToken(account.refresh_token);
+
+  if (!data?.access_token) {
+    throw new Error("Failed to refresh access token.");
+  }
+
+  // Update access_token and possibly refresh_token
+  await prisma.spotifyAccount.update({
+    where: {
+      access_token: account.access_token,
+    },
+    data: {
+      access_token: data.access_token,
+      refresh_token: data.refresh_token || account.refresh_token, // keep old if new not returned
+    },
+  });
+
+  return data.access_token;
+};
 
 export const isTokenValid = async (token: string): Promise<boolean> => {
   try {
@@ -116,5 +118,42 @@ export const refreshSpotifyToken = async (refreshToken: string) => {
   } catch (error) {
     console.error("Error refreshing Spotify token:", error);
     throw new Error("Can't refresh token");
+  }
+};
+
+export const savePlaylist = async (
+  accountId: string,
+  playlistName: string,
+  tracks: Track[]
+) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user.id) {
+    throw new Error("User not authenticated");
+  }
+
+  const parsedPayload = playlistSchema.safeParse({
+    accountId,
+    playlistName,
+    tracks,
+  });
+
+  if (!parsedPayload.success) {
+    throw new Error("Wrong Inputs");
+  }
+
+  try {
+    await playlistDb.savePlaylist({
+      accountId: parsedPayload.data.accountId,
+      playlistName: parsedPayload.data.playlistName,
+      tracks: parsedPayload.data.tracks,
+    });
+
+    return "Playlist Saved";
+
+  } catch (error) {
+    const err = new Error("Error storing playlist");
+    err.cause = error;
+    throw err;
   }
 };

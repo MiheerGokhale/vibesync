@@ -21,6 +21,8 @@ model User {
   password String
 
   accounts SpotifyAccount[]
+
+  @@index([email])
 }
 
 model SpotifyAccount {
@@ -33,6 +35,36 @@ model SpotifyAccount {
   access_token String @unique
   token_type String
   refresh_token String
+  
+  playlist Playlist[]
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
 
-  user User @relation(fields: [userId],references: [id])
+  @@index([emailAddress])
+  @@index([userId])
+}
+
+model Playlist{
+  id String @id @default(cuid())
+  accountId String
+  name String @unique
+  date DateTime
+  tracks Track[]
+  account SpotifyAccount @relation(fields: [accountId],references: [id],onDelete: Cascade)
+
+  @@index([accountId])
+  @@index([date])
+}
+
+model Track{
+  id String @id @default(cuid())
+  playlistId String
+
+  name String
+  uri String
+  image String
+
+  playlist Playlist @relation(fields: [playlistId],references: [id],onDelete: Cascade)
+
+  @@index([playlistId])
+  @@index([name])
 }

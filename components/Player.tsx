@@ -5,6 +5,7 @@ import { useCurrentAccount } from "@/store/UserStore";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
+import Button from "./Button";
 
 type Props = {
   track: { id: string; name: string; image: string } | null;
@@ -112,16 +113,16 @@ const Player = ({ track }: Props) => {
   if (!track) return null;
 
   return (
-    <div className="flex items-center gap-4 p-4 bg-zinc-900/20 text-white rounded-xl shadow-lg w-full max-w-md mx-auto">
+    <div className="flex items-center gap-4 p-4 bg-zinc-900 text-white rounded-xl shadow-lg mt-4 mx-2">
       <img src={track.image} alt={track.name} className="w-16 h-16 rounded-md" />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 justify-center items-center">
         <p className="text-lg font-semibold">{track.name}</p>
-        <button
+        <Button
+          text="Play"
           onClick={() => playSong(`spotify:track:${track.id}`)}
-          className="text-sm text-green-400 hover:underline"
+          className="text-sm text-black w-1/2  font-semibold bg-green-500 px-6 py-2 rounded-sm hover:ring-2 hover:ring-green-300  focus:ring-black focus:border-black border-2 border-black hover:border-2 hover:border-green-800 hover:right-2 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
         >
-          Start Playback
-        </button>
+        </Button>
       </div>
       <button
         onClick={togglePlayback}

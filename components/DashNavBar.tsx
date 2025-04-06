@@ -15,11 +15,7 @@ const DashNavBar = () => {
     const session = useSession();
 
     const { accounts, fetchAccounts } = useUserAccount();
-    const emailAddress = useCurrentAccount((state) => state.emailAddress);
-    const setEmailAddress = useCurrentAccount((state) => state.setEmailAddress);
-    // const image = useCurrentAccount((state) => state.image);
-    const setImage = useCurrentAccount((state) => state.setImage);
-
+    const {emailAddress,setAccountId,setEmailAddress,setImage} = useCurrentAccount();
     const router = useRouter();
     
 
@@ -31,13 +27,14 @@ const DashNavBar = () => {
     
     useEffect(() => {
         if (accounts.length > 0 && emailAddress === "") {
+            setAccountId(accounts[0].accountId);
             setEmailAddress(accounts[0].emailAddress);
             setImage(accounts[0].image);
         }
     }, [accounts]); // Only run when `accounts` update
 
     return (
-        <div className="z-10 absolute top-0 left-0 w-full px-8 py-6 flex justify-center items-center">
+        <div className="z-10 w-full px-8 py-6 flex justify-center items-center">
             <div className="flex flex-row justify-between w-2/3 px-4 py-2 border-1 border-gray-600 bg-green-400/10  rounded-xl">
                 {/* Logo and Branding */}
                 <div className="flex justify-center items-center">
