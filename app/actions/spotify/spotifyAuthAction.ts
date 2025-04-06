@@ -19,6 +19,7 @@ export const spotifyAuthorizationUrl = async () => {
       "user-read-email user-read-private playlist-modify-public playlist-modify-private user-top-read user-library-read user-read-playback-state user-modify-playback-state streaming",
     redirect_uri: process.env.SPOTIFY_REDIRECT_URI as string,
     state,
+    show_dialog:"true"
   });
   // SPotify Authorization URL
   return `https://accounts.spotify.com/authorize?${params.toString()}`;
