@@ -36,7 +36,7 @@ model SpotifyAccount {
   token_type String
   refresh_token String
   
-  playlist Playlist[]
+  playlists Playlist[]
   user User @relation(fields: [userId],references: [id],onDelete: Cascade)
 
   @@index([emailAddress])
@@ -47,8 +47,9 @@ model Playlist{
   id String @id @default(cuid())
   accountId String
   name String @unique
-  date DateTime
+  date DateTime @default(now())
   tracks Track[]
+  publicId String @unique @default(uuid())
   account SpotifyAccount @relation(fields: [accountId],references: [id],onDelete: Cascade)
 
   @@index([accountId])

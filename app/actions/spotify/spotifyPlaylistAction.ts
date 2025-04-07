@@ -10,7 +10,7 @@ import { Track } from "@/store/SpotifyStore";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 
-export const getPlaylist = async (
+export const generatePlaylist = async (
   weather: string,
   mood: string,
   emailAddress: string
@@ -157,3 +157,20 @@ export const savePlaylist = async (
     throw err;
   }
 };
+
+export const getAllPlaylist = async (accountId:string) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user.id) {
+    throw new Error("User not authenticated");
+  }
+
+  try {
+    return await accountDb.getPlaylists(accountId);
+  } catch (error) {
+    const err = new Error("Error while fetching Playlists");
+    err.cause = error;
+    throw err;
+  }
+}
+

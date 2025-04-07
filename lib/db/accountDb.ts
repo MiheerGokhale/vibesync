@@ -43,4 +43,31 @@ export const accountDb = {
             }
         })
     },
+    getPlaylists: async (accoundId:string) => {
+        return await prisma.spotifyAccount.findUnique({
+            where:{
+                id:accoundId
+            },
+            select:{
+                playlists:{
+                    orderBy:{
+                        date:"desc"
+                    },
+                    select:{
+                        id:true,
+                        name:true,
+                        date:true,
+                        publicId:true,
+                        tracks:{
+                            select:{
+                                name:true,
+                                uri:true,
+                                image:true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 }

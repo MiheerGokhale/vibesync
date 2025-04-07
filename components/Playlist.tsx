@@ -37,7 +37,7 @@ const Playlist = () => {
            }} text="Save" className="w-1/2 mx-0 focus:ring-black focus:border-black border-2 border-black bg-green-500 hover:border-2 hover:border-green-800 hover:right-2 font-medium transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105" />
         </div>
       </div>
-      <div className="h-1/2 overflow-y-auto px-4 space-y-4 mt-2">
+      <div className="h-1/2 overflow-y-auto px-4 space-y-4 mt-2 custom-scrollbar">
         {tracks.map((t) => (
           <div key={t.id} className="flex items-center gap-4 p-2 border rounded-lg last:border-none border-green-600 bg-green-100/50 hover:bg-green-200 transition-all duration-200 justify-between shadow-sm">
             <img

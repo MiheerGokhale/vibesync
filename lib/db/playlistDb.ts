@@ -17,5 +17,22 @@ export const playlistDb = {
                 }
             }
         })
+    },
+    getSharePlaylist: async(publicId:string) => {
+        return await prisma.playlist.findUnique({
+            where:{
+                publicId
+            },
+            select:{
+                name:true,
+                tracks:{
+                    select:{
+                        name:true,
+                        image:true,
+                        uri:true
+                    }
+                }
+            }
+        });
     }
 }

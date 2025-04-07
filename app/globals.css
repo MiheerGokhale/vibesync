@@ -9,3 +9,23 @@ input:-webkit-autofill:active {
   color: black !important;
   -webkit-box-shadow: 0 0 0px 1000px #86efac inset !important;
 }
+
+/* globals.css */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #d1fae5; /* Tailwind green-100 */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #34d399; /* Tailwind green-400 */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #10b981; /* Tailwind green-500 */
+}
+

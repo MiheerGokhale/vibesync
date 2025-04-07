@@ -10,7 +10,7 @@ import { fetchWeather } from "@/app/actions/weatherAction/weatherAction";
 import { useWeatherStore } from "@/store/WeatherStore";
 // import { fetchBackgroundImage } from "@/app/actions/Unsplash/unsplashAction";
 import { useUnsplashImage } from "@/store/UnsplashStore";
-import { getPlaylist } from "@/app/actions/spotify/spotifyPlaylistAction";
+import { generatePlaylist } from "@/app/actions/spotify/spotifyPlaylistAction";
 import { useCurrentAccount } from "@/store/UserStore";
 import { useSpotifyTracks } from "@/store/SpotifyStore";
 
@@ -56,7 +56,7 @@ const GeneratePlaylist = () => {
        },[]);
 
        const playlist = useCallback(async () => {
-              const tracks= await getPlaylist(condition, mood, emailAddress);
+              const tracks= await generatePlaylist(condition, mood, emailAddress);
               setTracks(tracks);
               // setBgImage(await fetchBackgroundImage(condition,mood));   
               setBgImage("https://images.unsplash.com/photo-1541215571283-a4973d4e2c68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MzIzODR8MHwxfHNlYXJjaHwzfHxDbG91ZHMlMjBSb21hbnRpY3xlbnwwfDB8fHwxNzQzNjY4MzU2fDA&ixlib=rb-4.0.3&q=80&w=1080");
@@ -79,7 +79,6 @@ const GeneratePlaylist = () => {
                      {condition != "" && mood != "" ? <Button className="w-1/2 focus:ring-black focus:border-black border-2 border-black bg-green-500 hover:border-2 hover:border-green-800 hover:right-2 font-medium transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105" text="Generate Playlist" 
                      onClick={playlist} /> : <Button className="w-1/2 focus:ring-black focus:border-black border-2 border-black bg-green-500 hover:border-2 hover:border-green-800 hover:right-2 font-medium transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105" text="Generate Playlist" 
                      onClick={playlist} disabled={true} /> }
-                     
               </div>
        </div>
 }
