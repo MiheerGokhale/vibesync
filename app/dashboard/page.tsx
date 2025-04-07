@@ -1,7 +1,7 @@
 "use client";
 
 const DashBoard = () => {
-    return <div className="">
+    return <div className="h-screen w-screen px-10 pb-32">
 
     </div>
 }
