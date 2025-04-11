@@ -201,6 +201,10 @@ const authOptions = {
       }
       return session;
     },
+    // authorized: async ({ auth }: { auth: Session | null }) => {
+    //   // Logged in users are authenticated, otherwise redirect to login page
+    //   return !!auth
+    // }
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {

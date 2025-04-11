@@ -3,8 +3,8 @@ import Label from "./Label";
 const Hero = () => {
     return <div className="text-green-500 font-extrabold mb-4">
         <div className="flex flex-col justify-center items-center">
-            <h1 className="text-5xl pb-4">Your Mood, Your Music</h1>
-            <h2 className="text-3xl">Music + Weather + Mood</h2>
+            <h1 className=" text-3xl md:text-5xl pb-4">Your Mood, Your Music</h1>
+            <h2 className=" text-xl md:text-3xl">Music + Weather + Mood</h2>
         </div>
         <div className="flex mt-4">
             <Label className="bg-amber-400 text-white font-medium transition delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-110" icon={smile} content="Happy" />

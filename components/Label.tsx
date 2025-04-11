@@ -7,9 +7,9 @@ type Props = {
 }
 
 const Label = ({icon,content,className}:Props) => {
-    return <div className={cn("flex justify-center items-center px-4 py-3 rounded-xl m-2",className)}>
+    return <div className={cn("flex justify-center items-center px-2 py-1  md:px-4 md:py-3 rounded-xl m-2",className)}>
             <div>{icon}</div>
-            <div className="text-xl pl-1">{content}</div>
+            <div className="text-sm md:text-xl pl-1">{content}</div>
     </div>
 }
 

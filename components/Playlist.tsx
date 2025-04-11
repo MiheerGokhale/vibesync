@@ -20,11 +20,11 @@ const Playlist = () => {
 
   return (
     <div className="relative h-screen flex flex-col">
-      <div className="text-xl font-bold p-4 flex flex-row justify-between items-center  border rounded-lg last:border-none border-green-600 bg-green-100/50 hover:bg-green-200 transition-all duration-200  shadow-sm">
+      <div className="text-xl font-bold p-4 flex flex-col md:flex-row justify-between items-center  border rounded-lg last:border-none border-green-600 bg-green-100/50 hover:bg-green-200 transition-all duration-200  shadow-sm">
         <h1 className=" text-green-900 font-semibold tracking-wide">
           Generated Playlist
         </h1>
-        <div className="flex flex-row gap-x-2 justify-center items-center">
+        <div className="flex flex-row p-2 px-4 gap-x-2 justify-center items-center">
           <Input className="py-2 bg-green-500 text-gray-800 border-2 border-black rounded-lg shadow-md cursor-pointer flex items-center placeholder:text-black" placeholder="Enter Playlist Name" type="text"
             onChange={(e) => {
               setPlaylistName(e.target.value);

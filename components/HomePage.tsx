@@ -6,7 +6,7 @@ const HomePage = () => {
     return <div className="relative overflow-hidden">
         <NavBar />
         <WavyBackground
-            className="mt-[-30vh]"
+            className="md:mt-[-30vh]"
             colors={["#FFD700","#00A3E0","#4B0082","#E0FFFF","#778899"]}>
             <Hero />
         </WavyBackground>

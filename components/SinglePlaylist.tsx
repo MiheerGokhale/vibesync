@@ -7,12 +7,12 @@ const SinglePlaylist = ({ id, name, date, publicId,tracks }: Playlist) => {
     const router = useRouter();
     const setTracks = useSpotifyTracks((state) => state.setTracks);
 
-    return <div key={id} className="flex flex-row justify-between items-center w-full m-2 p-2 border rounded-lg last:border-none border-green-600 bg-green-100/50 hover:bg-green-200 transition-all duration-200 shadow-sm">
-        <div className="flex flex-row gap-x-4 text-green-900 font-semibold tracking-wide w-2/6 break-words">
-            <p className="text-lg font-semibold">Date: {date === undefined ? "" : date.toLocaleDateString()}</p>
-            <p className="text-lg font-semibold truncate max-w-">Name: {name}</p>
+    return <div key={id} className="flex flex-col gap-y-2 md:gap-y-0 md:flex-row justify-between items-center w-full m-2 p-2 border rounded-lg last:border-none border-green-600 bg-green-100/50 hover:bg-green-200 transition-all duration-200 shadow-sm">
+        <div className="flex flex-row gap-x-4 text-green-900 font-semibold tracking-wide w-full md:w-2/6 break-words">
+            <p className="text-sm md:text-lg font-semibold">Date: {date === undefined ? "" : date.toLocaleDateString()}</p>
+            <p className="text-sm md:text-lg font-semibold truncate max-w-">Name: {name}</p>
         </div>
-        <div className="flex flex-row gap-x-3 overflow-x-auto  w-4/6 max-w-4/6 custom-scrollbar">
+        <div className="flex flex-row gap-x-3 overflow-x-auto w-full md:w-4/6 md:max-w-4/6 custom-scrollbar">
             {tracks.map((track: Track) =>
                 <Playlist key={track.id} track={track} />
             )}

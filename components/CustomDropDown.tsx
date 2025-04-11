@@ -23,7 +23,7 @@ const CustomDropdown = ({ label, options, placeholder,setMood }:Props) => {
                 onClick={() => setOpen(!open)}
             >
                 {selected === null ? (
-                    <>{placeholder}</>
+                    <div className="flex justify-center items-center">{placeholder}</div>
                 ) : (
                     <>
                         {selected.icon}
