@@ -25,7 +25,6 @@ interface CustomToken extends JWT {
   id?: string;
 }
 
-
 const authOptions = {
   providers: [
     CredentialsProvider({
@@ -179,6 +178,8 @@ const authOptions = {
               refresh_token: parsedInput.data.refresh_token,
             });
 
+            // console.log("Existing Account", existingAccount);
+
             return true;
           }
         }
@@ -187,14 +188,38 @@ const authOptions = {
       throw new Error("Invalid user data from Spotify.");
     },
 
-    async jwt({ token, user }: { token: CustomToken; user: User }) {
-      if (user) {
+    async jwt({
+      token,
+      user,
+      account,
+    }: {
+      token: CustomToken;
+      user: User;
+      account: Account | null;
+    }) {
+      if (user && account?.provider === "credentials") {
         token.id = user.id;
-        token.email= user.email // ✅ Store user ID in the token
+        token.email = user.email;
+        return token;
       }
+
+      if (user && account?.provider === "spotify") {
+        const getUser = await userDb.getUser(user.email as string);
+        token.id = getUser?.id;
+        token.email = getUser?.email;
+        return token;
+      }
+
+      // On subsequent requests, just return existing token
       return token;
     },
-    async session({ session, token }:{session:Session,token:CustomToken}) {
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: CustomToken;
+    }) {
       if (token?.id) {
         session.user.id = token.id as string; // ✅ Add ID from token
         session.user.email = token.email as string;

@@ -42,7 +42,9 @@ export const GET = async (req:NextRequest) => {
             token_type:response.token_type,
         })
     } catch (error) {
-        throw error;
+        const err = new Error("Spotify Premium Account Needed");
+        err.cause = error;
+        throw err;
     }
     return NextResponse.redirect(new URL("/dashboard",req.url));
 }

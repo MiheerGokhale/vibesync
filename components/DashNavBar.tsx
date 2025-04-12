@@ -9,6 +9,7 @@ import { spotifyAuthorizationUrl } from "@/app/actions/spotify/spotifyAuthAction
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCurrentAccount, useUserAccount } from "@/store/UserStore";
+import { toast } from "sonner";
 // import Image from "next/image";
 
 const DashNavBar = () => {
@@ -23,6 +24,7 @@ const DashNavBar = () => {
 
     useEffect(() => {
         if (session.status === "authenticated" && session.data?.user?.id) {
+            console.log("User ID:", session.data.user.id);
             fetchAccounts(session.data.user.id); // Only fetch accounts once when the user logs in
         }
     }, [session.status, session.data]); // Only re-run when session updates
@@ -111,8 +113,15 @@ const DashNavBar = () => {
                                             }} />
                                         </>
                                         <SpotifyButton content="Connect" onClick={async () => {
-                                            const url = await spotifyAuthorizationUrl();
-                                            router.push(url);
+                                            try {
+                                                const url = await spotifyAuthorizationUrl();
+                                                router.push(url);
+                                            } catch (error) {
+                                                if (error instanceof Error) {
+                                                    toast.error(error.message);
+                                                    return;
+                                                }
+                                            }
                                         }} />
                                     </div>
                                 </>
