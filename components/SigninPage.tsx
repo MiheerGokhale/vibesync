@@ -8,7 +8,7 @@ import Icon from "./Icon";
 import useSigninStore from "@/store/useSigninStore";
 import { signUpUser } from "@/app/actions/authAction";
 import { useRouter } from "next/navigation";
-import SpotifyAuth from "./SpotifyAuth";
+// import SpotifyAuth from "./SpotifyAuth";
 import { toast } from "sonner";
 
 const SigninPage = () => {
@@ -53,7 +53,7 @@ const SigninPage = () => {
                         }
                     }} className="text-black w-full rounded-md  bg-green-700 py-3 hover:bg-green-900 transition mx-0 focus:ring-2 focus:ring-green-700 focus:border-green-700" text={"Create account"} />
 
-                    <SpotifyAuth />
+                    {/* <SpotifyAuth /> */}
                 </div>
             </div>
         </div>
