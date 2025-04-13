@@ -10,20 +10,20 @@ VibeSync is a dynamic full-stack web app that creates music playlists tailored t
 
 ### 🔥 Frontend
 - **Framework**: [Next.js](https://nextjs.org)
-- **Styling**: Tailwind CSS, Responsive Design
-- **State Management**: Zustand
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/), Responsive Design
+- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
 - **Animations**: Framer Motion (used in visual UI effects like waves)
-- **UI Effects**: Custom canvas rendering for mood-based visuals
+- **UI Effects**: Custom canvas rendering Componenent WavyBackground [Aceternity](https://ui.aceternity.com/)
 
 ### 🔧 Backend
 - **Server**: [Next.js](https://nextjs.org)
-- **Database**: PostgreSQL
-- **Security**: JWT-based authentication using Cookies via NextAuth
+- **Database**: [PostgreSQL](https://neon.tech/)
+- **Security**: JWT-based authentication using Cookies via [NextAuth](https://next-auth.js.org/)
 - **ORM**: Prisma
 
 ### 🧠 APIs Used
-- 🎵 Spotify API (Playlist data)
-- ☁️ OpenWeatherMap API (Weather data)
+- 🎵 [Spotify API](https://developer.spotify.com/) (Playlist data)
+- ☁️ [OpenWeatherMap API](https://openweathermap.org/) (Weather data)
 
 ---
 
